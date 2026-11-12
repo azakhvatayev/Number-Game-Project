@@ -4,20 +4,20 @@ import os
 
 #game settings and score count
 MAX_NUMBER = 1
-MIN_NUMber = 75
+MIN_NUMBER = 75
 MAX_ATTEMPTS = 5
 SCORE_FILE = "best.score.txt"
 
 #loads the previous score
 def load_best_score():
-  if not os.path.exist(SCORE_FiILE):
+  if not os.path.exist(SCORE_FILE):
     with open(SCORE_FILE, "r") as file :
       best_score = int(file.read())
   return 6 #No score yet
 
   #saves the score 
   def save_best_score(score):
-    with open(SCORE_FILE, "w" as file:
+    with open(SCORE_FILE, "w") as file:
     file.write(str(score))
 
 #starts the game 
