@@ -24,16 +24,16 @@ def save_best_score(score):
 def play_game():
   best_score = load_best_score()
 
-  print("\n================================")
-  print("       Welcome to Numble!         ")
-  print("\n================================")
-  print("I am thinking of a number between 1 and 75!")
-  print("Can you guess try to guess it?")
+print("\n================================")
+print("       Welcome to Numble!         ")
+print("\n================================")
+print("I am thinking of a number between 1 and 75!")
+print("Can you guess try to guess it?")
 
-  if best_score <= MAX_ATTEMPTS:
-    print("Current Best Score:" , best_score, "attempts")
-  else:
-    print ("current Best Score: No score yet!")
+if best_score <= MAX_ATTEMPTS:
+  print("Current Best Score:" , best_score, "attempts")
+else:
+  print ("current Best Score: No score yet!")
 
 
   
