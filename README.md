@@ -1,5 +1,6 @@
 import random
 import os
+#keeps track of score
 
 # Game settings and score count
 MIN_NUMBER = 1
