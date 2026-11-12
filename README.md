@@ -16,8 +16,8 @@ def load_best_score():
   return 6 #No score yet
 
   #saves the score 
-  def save_best_score(score):
-    with open(SCORE_FILE, "w") as file:
+def save_best_score(score):
+  with open(SCORE_FILE, "w") as file:
     file.write(str(score))
 
 #starts the game 
