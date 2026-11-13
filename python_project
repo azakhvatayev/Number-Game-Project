@@ -1,14 +1,16 @@
 import random
 import os
-#keeps track of score
-import datetime import datetime 
-#keep record of each attempt
+# keeps track of score
 
-#score count
+import datetime
+
+# keep record of each attempt
+
+# score count
 
 SCORE_FILE = "best.score.txt"
 
-#dictionary that stores difficulty settings
+# dictionary that stores difficulty settings
 Game_Modes = {
     "1": {
         "name": "Simple",
@@ -16,14 +18,14 @@ Game_Modes = {
         "maximum": 50,
         "attempts": 8,
     },
-    
+
     "2": {
         "name": "Normal",
-        "minimun": 1,
+        "minimum": 1,
         "maximum": 100,
         "attempts": 6,
-    }
-    
+    },
+
     "3": {
         "name": "Complex",
         "minimum": 1,
@@ -32,34 +34,37 @@ Game_Modes = {
     }
 }
 
+
 def display_title():
     print("\n================================")
     print("      Welcome to Numble!        ")
     print("================================")
     print("I am thinking of a number!")
     print("Can you try to guess it?")
-    
+
+
 def display_modes():
     print("\nPick your skill level")
     print("-" * 30)
-    
+
     print("1. Simple Mode")
     print("   Number range 1-50")
     print("   Attempts: 8")
-    
+
     print()
     print("2. Normal Mode")
-    print("   Number range 1-50")
-    print("   Attempts: 8")
-    
-    print ()
-    
+    print("   Number range 1-100")
+    print("   Attempts: 6")
+
+    print()
+
     print("3. Complex Mode")
-    print("   Number range 1-50")
-    print("   Attempts: 8")
-    
-    print ("-"* 30)
-    
+    print("   Number range 1-500")
+    print("   Attempts: 4")
+
+    print("-" * 30)
+
+
 # Loads and stores the previous scores
 def load_best_scores():
     best_scores = {
@@ -67,134 +72,140 @@ def load_best_scores():
         "Normal": None,
         "Complex": None
     }
-    
-    if  os.path.exists(SCORE_FILE): #check if high score is here
+
+    if os.path.exists(SCORE_FILE):  # check if high score is here
         try:
-            with open(SCORE_FILE, "r") as file: #opens file in read mode
-                for line in file #read each saved line
-                    line = line.strip() #remove unneccessart spaces 
+            with open(SCORE_FILE, "r") as file:  # opens file in read mode
+                for line in file:  # read each saved line
+                    line = line.strip()  # remove unnecessary spaces
                     if not line:
-                        continues #ignore emty line
-                        part  = line.split("|") #separte saved info
-                        if len(parts) == 4:
-                            mode = part[0]
-                            try:
-                                score = int(parts[1])
-                                player = parts[2]
-                                date = parts[3] #only load recognized difficulty mode
-                                
-                              if mode in best_score:
+                        continue  # ignore empty line
+                    parts = line.split("|")  # separate saved info
+                    if len(parts) == 4:
+                        mode = parts[0]
+                        try:
+                            score = int(parts[1])
+                            player = parts[2]
+                            date = parts[3]  # only load recognized difficulty mode
+                            if mode in best_scores:
                                 if (
                                     best_scores[mode] is None
                                     or score > best_scores[mode]["score"]
-                                 ):
-                                     best_scores[mode] = {
-                                         "score": score,
-                                         "player": player,
-                                         "date": date
-                                     }   
-                                     
-                            except ValueError: #skips corrupted scores
-                                continue
-                            
+                                ):
+                                    best_scores[mode] = {
+                                        "score": score,
+                                        "player": player,
+                                        "date": date
+                                    }
+
+                        except ValueError:  # skips corrupted scores
+                            continue
+
         except OSError:
             print("Oh, something went wrong could not read score file.")
-            
+
+
     return best_scores
 
+
 def save_best_score(best_scores):
-    try: 
+    try:
         with open(SCORE_FILE, "w") as file:
             for mode, information in best_scores.items():
-                
+
                 if information is not None:
-                    score = information ["score"]
+                    score = information["score"]
                     player = information["player"]
-                    date = information ["date"]
-                    
-        file.write(
-            f"{mode}|{score}|{player}|{date}\n"
+                    date = information["date"]
+
+            file.write(
+                f"{mode}|{score}|{player}|{date}\n"
             )
-            
+
         print("\nBest scores have been locked in!")
-        
+
     except OSError:
-        print("\nOh, something went wrong counld not save scores.")
+        print("\nOh, something went wrong could not save scores.")
+
 
 def display_best_scores(best_scores):
     print("\n")
-    print("="* 35)
+    print("=" * 35)
     print("           Best Scores")
-    print("="* 35)
+    print("=" * 35)
 
     for mode, information in best_scores.items():
         print(f"\n{mode.upper()} MODE")
-        
-        if information is not NONE:
+
+        if information is not None:
             print("Best Score:", information["score"])
             print("Player:", information["player"])
             print("Date:", information["date"])
-            
-        else
+
+        else:
             print("No recorded scores yet.")
-        
-    print("="* 35)
-    
+
+    print("=" * 35)
+
+
 def get_player_name():
     while True:
-        name = input("\nEnter your name: ").strip
-        
+        name = input("\nEnter your name: ").strip()
+
         if name:
             name = name.replace("|", "")
             return name
-            
+
         else:
             print("Enter a valid name.")
-            
+
+
 def select_mode():
-    display modes()
-    
+    display_modes()
+
     while True:
         choice = input(
             "\nPick your level (1, 2, or 3):"
         ).strip()
-            
-        if choice in GAME_MODES:
-             return GAME_MODES[choice]
-             
+
+        if choice in Game_Modes:
+            return Game_Modes[choice]
+
         else:
-         print(
+            print(
                 "Invalid selection! "
                 "Please choose 1, 2, or 3."
             )
 
+
 def get_valid_guess(minimum, maximum):
     while True:
         guess = input("\nEnter your guess:").strip()
-        
+
         try:
             number = int(guess)
-            
+
         except ValueError:
             print("\nfYI!")
             print(
                 "Please enter only numbers!"
                 "Letters and symbols are not allowed."
-                )
-                continue
-            
-            if number < minimum or number > maximun:
-                print("\nOut of Range!")
-                
-                print(
-                    f"Please enter a number between"
-                    f"{minimum} and {maximun}."
-                )
-                continue 
-            
-            return number
-            
- def give_hint(guess, secret_number):
+            )
+            continue
+
+        if number < minimum or number > maximum:
+            print("\nOut of Range!")
+
+            print(
+                f"Please enter a number between"
+                f"{minimum} and {maximum}."
+            )
+            continue
+
+        return number
+
+
+def give_hint(guess, secret_number):
     if guess < secret_number:
         print("\nToo low! Try a HIGHER number.")
 
@@ -202,10 +213,11 @@ def get_valid_guess(minimum, maximum):
         print("\nToo high! Try a LOWER number.")
 
     else:
-        print("\Yay! You guessed the right number!")
-        
-#calculating score
-def calculate_score(total_attempts, attempts_used): 
+        print("\nYay! You guessed the right number!")
+
+
+# calculating score
+def calculate_score(total_attempts, attempts_used):
     base_score = 1000
 
     remaining_attempts = total_attempts - attempts_used
@@ -216,13 +228,14 @@ def calculate_score(total_attempts, attempts_used):
 
     return final_score
 
+
 def update_best_score(
-    best_scores,
-    mode,
-    player,
-    current_score
+        best_scores,
+        mode,
+        player,
+        current_score
 ):
-    current_date = datetime.now().strftime(
+    current_date = datetime.datetime.now().strftime(
         "%Y-%m-%d %H:%M:%S"
     )
 
@@ -243,7 +256,7 @@ def update_best_score(
         print("\nNEW HIGH SCORE!")
 
         print(
-            "Congradulations, you have beaten the previous high score!"
+            "Congratulations, you have beaten the previous high score!"
         )
 
         best_scores[mode] = {
@@ -264,6 +277,7 @@ def update_best_score(
 
         return False
 
+
 def play_game(player, best_scores):
     selected_mode = select_mode()
 
@@ -273,7 +287,7 @@ def play_game(player, best_scores):
     total_attempts = selected_mode["attempts"]
 
     secret_number = random.randint(minimum, maximum)
-    
+
     attempts_used = 0
     won = False
 
@@ -290,7 +304,7 @@ def play_game(player, best_scores):
 
     while attempts_used < total_attempts:
         remaining_attempts = (
-            total_attempts - attempts_used
+                total_attempts - attempts_used
         )
 
         print("\nAttempts Remaining:", remaining_attempts)
@@ -311,7 +325,7 @@ def play_game(player, best_scores):
 
             print("\n" + "=" * 35)
 
-            print("                 YOU WON!")
+            print("               YOU WON!")
 
             print("=" * 35)
 
@@ -328,12 +342,11 @@ def play_game(player, best_scores):
                 score
             )
 
-            save_best_scores(best_scores)
+            save_best_score(best_scores)
 
             break
 
     if not won:
-
         print("\n" + "=" * 35)
 
         print("                 GAME OVER!")
@@ -345,9 +358,10 @@ def play_game(player, best_scores):
         print("Attempts Used:", attempts_used)
         print("Final Score: 0")
 
-        print("\So Close!")
+        print("\nSo Close!")
 
     display_best_scores(best_scores)
+
 
 def play_again():
     while True:
@@ -366,6 +380,7 @@ def play_again():
                 "Invalid response! "
                 "Please enter Y or N."
             )
+
 
 def main():
     display_title()
@@ -400,9 +415,10 @@ def main():
 
     print("=" * 35)
 
+
 if __name__ == "__main__":
-    main() 
+    main()
 
 
 
-  
+
