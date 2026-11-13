@@ -325,7 +325,7 @@ def play_game(player, best_scores):
 
             print("\n" + "=" * 35)
 
-            print("               YOU WON!")
+            print("             YOU WON!")
 
             print("=" * 35)
 
